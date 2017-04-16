@@ -99,6 +99,18 @@
             }
         }
     }
+    
+    &:hover {
+        width: 170px;
+        
+        > ul > li > a {
+            text-aling: left;
+
+            span {
+                display: inline-block;
+            }
+        }
+    }
 }
 
 body.expand {
