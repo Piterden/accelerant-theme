@@ -1,71 +1,70 @@
-var initModal = function () {
+(function (window, document, $) {
+    
+    var initModal = function (e) {
 
-    var modal = $('.modal:not([data-initialized])');
-    var remote = $('.modal.remote:not([data-initialized])');
+        var modal = $('.modal:not([data-initialized])');
+        var remote = $('.modal.remote:not([data-initialized])');
 
-    var loading = '<div class="modal-loading"><div class="active loader large"></div></div>';
+        var loading = '<div class="modal-loading"><div class="active loader large"></div></div>';
 
-    // Loading state
-    modal.on('loading', function() {
-        $(this).find('.modal-content').append(loading);
-    });
-
-    // Clear remote modals when closed.
-    remote.on('hidden.bs.modal', function () {
-
-        $(this).removeData('bs.modal');
-
-        $(this).find('.modal-content').html(loading);
-    });
-
-    // Show loader for remote modals.
-    remote.on('show.bs.modal', function () {
-        $(this).find('.modal-content').html(loading);
-    });
-
-    // Handle ajax links in modals.
-    modal.on('click', 'a.ajax, .pagination a', function (e) {
-
-        e.preventDefault();
-
-        var wrapper = $(this).closest('.modal-content');
-
-        wrapper.append(loading);
-
-        $.get($(this).attr('href'), function (html) {
-            wrapper.html(html);
+        // Loading state
+        modal.on('loading', function () {
+            $(this).find('.modal-content').append(loading);
         });
-    });
 
-    // Handle ajax forms in modals.
-    modal.on('submit', 'form.ajax', function (e) {
+        // Clear remote modals when closed.
+        remote.on('hidden.bs.modal', function () {
 
-        e.preventDefault();
+            $(this).removeData('bs.modal');
 
-        var wrapper = $(this).closest('.modal-content');
+            $(this).find('.modal-content').html(loading);
+        });
 
-        wrapper.append(loading);
+        // Show loader for remote modals.
+        remote.on('show.bs.modal', function () {
+            $(this).find('.modal-content').html(loading);
+        });
 
-        if ($(this).attr('method') == 'GET') {
-            $.get($(this).attr('action'), $(this).serializeArray(), function (html) {
+        // Handle ajax links in modals.
+        modal.on('click', 'a.ajax, .pagination a', function (e) {
+
+            e.preventDefault();
+
+            var wrapper = $(this).closest('.modal-content');
+
+            wrapper.append(loading);
+
+            $.get($(this).attr('href'), function (html) {
                 wrapper.html(html);
             });
-        } else {
-            $.post($(this).attr('action'), $(this).serializeArray(), function (html) {
-                wrapper.html(html);
-            });
-        }
-    });
+        });
 
-    // Mark as initialized.
-    modal.attr('data-initialized', '');
-    remote.attr('data-initialized', '');
-};
+        // Handle ajax forms in modals.
+        modal.on('submit', 'form.ajax', function (e) {
 
-$(document).ready(function () {
-    initModal();
-});
+            e.preventDefault();
 
-$(document).ajaxComplete(function () {
-    initModal();
-});
+            var wrapper = $(this).closest('.modal-content');
+
+            wrapper.append(loading);
+
+            if ($(this).attr('method') == 'GET') {
+                $.get($(this).attr('action'), $(this).serializeArray(), function (html) {
+                    wrapper.html(html);
+                });
+            } else {
+                $.post($(this).attr('action'), $(this).serializeArray(), function (html) {
+                    wrapper.html(html);
+                });
+            }
+        });
+
+        // Mark as initialized.
+        modal.attr('data-initialized', '');
+        remote.attr('data-initialized', '');
+    };
+
+    $(document).ready(initModal);
+    $(document).ajaxComplete(initModal);
+
+})(window, document, jQuery);
