@@ -8,7 +8,7 @@
         var loading = '<div class="modal-loading"><div class="active loader large"></div></div>';
 
         // Loading state
-        modal.on('loading', function() {
+        modal.on('loading', function () {
             $(this).find('.modal-content').append(loading);
         });
 
