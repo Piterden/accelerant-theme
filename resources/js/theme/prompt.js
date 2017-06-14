@@ -20,7 +20,7 @@ $(function () {
                     $('.bootbox.modal')
                         .find('.modal-dialog')
                         .removeClass('shake')
-                        .removeClass('animated')
+                        .removeClass('animated');
                 }, 1000);
 
                 return false;
